@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Ports</title>
+    <style>
+        /* Dropdown styles */
+        #portsDropdown {
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none; /* Initially hidden */
+            position: absolute;
+        }
+        #selectedPortsContainer {
+            margin-left: 300px;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="searchInput" placeholder="Search for ports...">
+    <div id="portsDropdown"></div>
+    <div id="selectedPortsContainer">Selected Ports:</div>
+    </ul>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const portsDropdown = document.getElementById('portsDropdown');
+    const selectedPortsContainer = document.getElementById('selectedPortsContainer'); // Assuming you have this element in your HTML
+    let selectedPorts = []; // To keep track of selected ports
+
+    // Sample ports array
+    const ports = [
+      "Sydney",
+      "Barcelona",
+      "Rome",
+      "Southampton",
+      "Miami",
+      "New York",
+      "Amsterdam",
+      "Athens",
+      "Bari",
+      "Berlin",
+      "Bremerhaven",
+      "Catania",
+      "Copenhagen",
+      "Dover",
+      "Genoa",
+      "Haifa",
+      "Hamburg",
+      "Ijmuiden",
+      "Istanbul",
+      "Kiel",
+      "La Seyne-sur-Mer",
+      "Le Havre",
+      "Limassol",
+      "Limerick",
+      "Lisbon",
+      "Marseille",
+      "Naples",
+      "Palma de Mallorca",
+      "Rotterdam",
+      "Savona",
+      "Stockholm",
+      "Tarragona",
+      "Trieste",
+      "Valencia",
+      "Venice",
+      "Anchorage",
+      "Baltimore",
+      "Boston",
+      "Bridgetown",
+      "Charleston",
+      "Colon",
+      "Galveston",
+      "Jacksonville",
+      "Panama City",
+      "Fort Lauderdale",
+      "Los Angeles",
+      "Mobile",
+      "New Orleans",
+      "Norfolk",
+      "Oahu",
+      "Orlando",
+      "Pointe-a-Pitre",
+      "Punta Cana",
+      "Quebec",
+      "San Diego",
+      "San Francisco",
+      "San Juan",
+      "Santo Domingo",
+      "Seattle",
+      "Seward",
+      "Tampa",
+      "Vancouver",
+      "Whittier",
+      "Baltra Island",
+      "Buenos Aires",
+      "Cartagena",
+      "Itajai",
+      "Montevideo",
+      "Rio De Janeiro",
+      "San Antonio",
+      "Santos",
+      "Valparaiso",
+      "Adelaide",
+      "Auckland",
+      "Brisbane",
+      "Melbourne",
+      "Perth",
+      "Tahiti",
+      "Cape Town",
+      "Abu Dhabi",
+      "Dubai",
+      "Hong Kong",
+      "Osaka",
+      "Shanghai",
+      "Singapore",
+      "Tokyo"
+    ];
+
+    searchInput.addEventListener('focus', () => {
+        portsDropdown.style.display = 'block'; // Show dropdown when search bar is clicked
+        populateDropdown(); // Populate dropdown with all ports initially
+    });
+
+    searchInput.addEventListener('input', populateDropdown);
+
+    function populateDropdown() {
+        const query = searchInput.value.toLowerCase();
+        const filteredPorts = ports.filter(port => port.toLowerCase().includes(query));
+
+        portsDropdown.innerHTML = '';
+        filteredPorts.forEach(port => {
+            const div = document.createElement('div');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = port;
+            checkbox.name = 'ports';
+            checkbox.value = port;
+            checkbox.checked = selectedPorts.includes(port); // Check if port is already selected
+
+            checkbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    selectedPorts.push(port);
+                    searchInput.value = ''; // Reset search bar
+                    populateDropdown(); // Refresh dropdown
+                } else {
+                    const index = selectedPorts.indexOf(port);
+                    if (index > -1) {
+                        selectedPorts.splice(index, 1);
+                    }
+                }
+                updateSelectedPortsDisplay(); // Update the display of selected ports
+                console.log(selectedPorts);
+            });
+
+            const label = document.createElement('label');
+            label.htmlFor = port;
+            label.textContent = port;
+
+            div.appendChild(checkbox);
+            div.appendChild(label);
+            portsDropdown.appendChild(div);
+        });
+    }
+
+    // Hide dropdown when clicked outside
+    document.addEventListener('click', (event) => {
+        if (event.target !== searchInput && !portsDropdown.contains(event.target)) {
+            portsDropdown.style.display = 'none';
+        }
+    });
+
+    function updateSelectedPortsDisplay() {
+        selectedPortsContainer.innerHTML = ''; // Clear the container
+        selectedPorts.forEach(port => {
+            const portDiv = document.createElement('div');
+            portDiv.textContent = port;
+            selectedPortsContainer.appendChild(portDiv);
+        });
+    }
+
+    </script> 
+
+</body>
+</html>
